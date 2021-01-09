@@ -1,17 +1,26 @@
 from tkinter import Tk, PhotoImage, Canvas, Button, N
-import time
+import pandas
+import random
 # ---------------------------- UI COLORS AND FONT ------------------------------- #
 BACKGROUND_COLOR = "#B1DDC6"
 FONT = ("Courier", 20, "italic")
 WORD_FONT = ("Courier", 30, "bold")
 
-# ---------------------------- UI SETUP ------------------------------- #
+# ---------------------------- WINDOW SETUP ------------------------------- #
 
 window = Tk()
 window.title("Flash Card App")
 window.minsize(height=750, width=900)
 window.config(bg=BACKGROUND_COLOR)
 
+
+# ------------------------------------------- DATA ------------------------------------------- #
+
+data = pandas.read_csv("data/french_words.csv")
+french_data = data.French.to_list()
+english_data = data.English.to_list()
+print(french_data)
+print(english_data)
 # ---------------------------- NEW CARD ------------------------------- #
 
 FRONT_IMAGE = PhotoImage(file="images/card_front.png")
@@ -30,11 +39,14 @@ def card_side(side, language, word):
 
 
 def new_card():
-    card_side(FRONT_IMAGE, "French", "Chambre")
-    window.after(2000, card_side, BACK_IMAGE, "English", "Bedroom")
+    word_index = random.randint(0, len(french_data))
+    english_word = english_data[word_index]
+    french_word = french_data[word_index]
+    card_side(FRONT_IMAGE, "French", f"{french_word}")
+    window.after(2000, card_side, BACK_IMAGE, "English", f"{english_word}")
+
 
 # ---------------------------- RIGHT AND WRONG EVENTS and BUTTONS ------------------------------- #
-
 
 def on_right():
     new_card()
