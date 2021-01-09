@@ -1,5 +1,5 @@
 from tkinter import Tk, PhotoImage, Canvas, Button, N
-
+import time
 # ---------------------------- UI COLORS AND FONT ------------------------------- #
 BACKGROUND_COLOR = "#B1DDC6"
 FONT = ("Courier", 20, "italic")
@@ -39,7 +39,8 @@ def card_side(side, language, word):
 
 def new_card():
     card_side(FRONT_IMAGE, "French", "Chambre")
-    card_side(BACK_IMAGE, "English", "Bedroom")
+    window.after(2000, card_side, BACK_IMAGE, "English", "Bedroom")
+
 
 # ---------------------------- APP LAUNCH AND LOOP ------------------------------- #
 new_card()
