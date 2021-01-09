@@ -17,10 +17,15 @@ window.config(bg=BACKGROUND_COLOR)
 # ------------------------------------------- DATA ------------------------------------------- #
 
 data = pandas.read_csv("data/french_words.csv")
-french_data = data.French.to_list()
-english_data = data.English.to_list()
-print(french_data)
-print(english_data)
+dictionary_words = {
+    index: {
+        "English": data.loc[index].English,
+        "French": data.loc[index].French
+    }
+    for index in range(data.count().French)
+}
+
+print(dictionary_words)
 # ---------------------------- NEW CARD ------------------------------- #
 
 FRONT_IMAGE = PhotoImage(file="images/card_front.png")
@@ -39,9 +44,10 @@ def card_side(side, language, word):
 
 
 def new_card():
-    word_index = random.randint(0, len(french_data))
-    english_word = english_data[word_index]
-    french_word = french_data[word_index]
+    next_word = random.choice(dictionary_words)
+    english_word = next_word["English"]
+    french_word = next_word["French"]
+
     card_side(FRONT_IMAGE, "French", f"{french_word}")
     window.after(2000, card_side, BACK_IMAGE, "English", f"{english_word}")
 
