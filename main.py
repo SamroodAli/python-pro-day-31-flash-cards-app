@@ -17,12 +17,17 @@ window.config(bg=BACKGROUND_COLOR)
 # ------------------------------------------- DATA ------------------------------------------- #
 
 data = pandas.read_csv("data/french_words.csv")
+columns = data.columns
+front_heading = columns[0]
+back_heading = columns[1]
+
+print(columns)
 dictionary_words = {
     index: {
-        "English": data.loc[index].English,
-        "French": data.loc[index].French
+        front_heading: data.loc[index][front_heading],
+        back_heading: data.loc[index][back_heading]
     }
-    for index in range(data.count().French)
+    for index in range(data.count()[front_heading])
 }
 
 print(dictionary_words)
@@ -45,11 +50,11 @@ def card_side(side, language, word):
 
 def new_card():
     next_word = random.choice(dictionary_words)
-    english_word = next_word["English"]
-    french_word = next_word["French"]
+    front_word = next_word[front_heading]
+    back_word = next_word[back_heading]
 
-    card_side(FRONT_IMAGE, "French", f"{french_word}")
-    window.after(2000, card_side, BACK_IMAGE, "English", f"{english_word}")
+    card_side(FRONT_IMAGE, f"{front_heading}", f"{front_word}")
+    window.after(2000, card_side, BACK_IMAGE, f"{back_heading}", f"{back_word}")
 
 
 # ---------------------------- RIGHT AND WRONG EVENTS and BUTTONS ------------------------------- #
