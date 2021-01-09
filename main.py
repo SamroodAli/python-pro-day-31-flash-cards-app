@@ -21,16 +21,9 @@ columns = data.columns
 front_heading = columns[0]
 back_heading = columns[1]
 
-print(columns)
-dictionary_words = {
-    index: {
-        front_heading: data.loc[index][front_heading],
-        back_heading: data.loc[index][back_heading]
-    }
-    for index in range(data.count()[front_heading])
-}
+words_list = data.to_dict(orient="records")
 
-print(dictionary_words)
+
 # ---------------------------- NEW CARD ------------------------------- #
 
 FRONT_IMAGE = PhotoImage(file="images/card_front.png")
@@ -49,7 +42,7 @@ def card_side(side, language, word):
 
 
 def new_card():
-    next_word = random.choice(dictionary_words)
+    next_word = random.choice(words_list)
     front_word = next_word[front_heading]
     back_word = next_word[back_heading]
 
