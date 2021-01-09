@@ -25,6 +25,7 @@ words_list = data.to_dict(orient="records")
 
 
 # ---------------------------- NEW CARD ------------------------------- #
+FLIP_TIMER = None
 
 FRONT_IMAGE = PhotoImage(file="images/card_front.png")
 BACK_IMAGE = PhotoImage(file="images/card_back.png")
@@ -42,21 +43,26 @@ def card_side(side, language, word):
 
 
 def new_card():
+    global FLIP_TIMER
     next_word = random.choice(words_list)
     front_word = next_word[front_heading]
     back_word = next_word[back_heading]
 
     card_side(FRONT_IMAGE, f"{front_heading}", f"{front_word}")
-    window.after(2000, card_side, BACK_IMAGE, f"{back_heading}", f"{back_word}")
+    FLIP_TIMER = window.after(2000, card_side, BACK_IMAGE, f"{back_heading}", f"{back_word}")
 
 
 # ---------------------------- RIGHT AND WRONG EVENTS and BUTTONS ------------------------------- #
 
 def on_right():
+    global FLIP_TIMER
+    window.after_cancel(FLIP_TIMER)
     new_card()
 
 
 def on_wrong():
+    global FLIP_TIMER
+    window.after_cancel(FLIP_TIMER)
     new_card()
 
 
